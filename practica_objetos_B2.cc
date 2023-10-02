@@ -12,7 +12,7 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION} _tipo_objeto;
+typedef enum{ CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION } _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -29,7 +29,7 @@ int Window_x=50,Window_y=50,Window_width=650,Window_high=650;
 
 
 // objetos
-_cubo cubo;
+_cubo cubo(1.5);
 _piramide piramide(0.85,1.3);
 _objeto_ply  ply; 
 _rotacion rotacion; 
@@ -86,22 +86,22 @@ glRotatef(Observer_angle_y,0,1,0);
 void draw_axis()
 {
 	
-glDisable(GL_LIGHTING);
-glLineWidth(2);
-glBegin(GL_LINES);
-// eje X, color rojo
-glColor3f(1,0,0);
-glVertex3f(-AXIS_SIZE,0,0);
-glVertex3f(AXIS_SIZE,0,0);
-// eje Y, color verde
-glColor3f(0,1,0);
-glVertex3f(0,-AXIS_SIZE,0);
-glVertex3f(0,AXIS_SIZE,0);
-// eje Z, color azul
-glColor3f(0,0,1);
-glVertex3f(0,0,-AXIS_SIZE);
-glVertex3f(0,0,AXIS_SIZE);
-glEnd();
+	glDisable(GL_LIGHTING);
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	// eje X, color rojo
+	glColor3f(1,0,0);
+	glVertex3f(-AXIS_SIZE,0,0);
+	glVertex3f(AXIS_SIZE,0,0);
+	// eje Y, color verde
+	glColor3f(0,1,0);
+	glVertex3f(0,-AXIS_SIZE,0);
+	glVertex3f(0,AXIS_SIZE,0);
+	// eje Z, color azul
+	glColor3f(0,0,1);
+	glVertex3f(0,0,-AXIS_SIZE);
+	glVertex3f(0,0,AXIS_SIZE);
+	glEnd();
 }
 
 
@@ -115,7 +115,7 @@ void draw_objects()
 switch (t_objeto){
 	case CUBO: cubo.draw(modo,1.0,0.0,0.0,5);break;
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,5);break;
-        case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
+        case OBJETO_PLY: ply.draw(modo,1.0,1.0,0.0,5);break;
         case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
 	}
@@ -202,8 +202,8 @@ switch (Tecla1){
 	case GLUT_KEY_RIGHT:Observer_angle_y++;break;
 	case GLUT_KEY_UP:Observer_angle_x--;break;
 	case GLUT_KEY_DOWN:Observer_angle_x++;break;
-	case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
-	case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
+	case GLUT_KEY_F11:Observer_distance*=1.2;break;
+	case GLUT_KEY_F12:Observer_distance/=1.2;break;
 	}
 glutPostRedisplay();
 }
@@ -249,73 +249,73 @@ glViewport(0,0,Window_width,Window_high);
 int main(int argc, char *argv[] )
 {
  
-// perfil 
+	// perfil 
+	
+	vector<_vertex3f> perfil, poligono;
+	_vertex3f aux;
 
-vector<_vertex3f> perfil, poligono;
-_vertex3f aux;
+	aux.x=1.0; aux.y=-1.0; aux.z=0.0;
+	perfil.push_back(aux);
+	aux.x=1.0; aux.y=1.0; aux.z=0.0;
+	perfil.push_back(aux);
 
-aux.x=1.0; aux.y=-1.0; aux.z=0.0;
-perfil.push_back(aux);
-aux.x=1.0; aux.y=1.0; aux.z=0.0;
-perfil.push_back(aux);
+	rotacion.parametros(perfil,6);
 
-rotacion.parametros(perfil,6);
+	aux.x=1.0; aux.y=0.0; aux.z=1.0;
+	poligono.push_back(aux);
+	aux.x=1.0; aux.y=0.0; aux.z=-1.0;
+	poligono.push_back(aux);
+	aux.x=-1.2; aux.y=0.0; aux.z=-1.0;
+	poligono.push_back(aux);
+	aux.x=-0.8; aux.y=0.0; aux.z=0.0;
+	poligono.push_back(aux);
+	aux.x=-1.2; aux.y=0.0; aux.z=1.0;
+	poligono.push_back(aux);
 
-aux.x=1.0; aux.y=0.0; aux.z=1.0;
-poligono.push_back(aux);
-aux.x=1.0; aux.y=0.0; aux.z=-1.0;
-poligono.push_back(aux);
-aux.x=-1.2; aux.y=0.0; aux.z=-1.0;
-poligono.push_back(aux);
-aux.x=-0.8; aux.y=0.0; aux.z=0.0;
-poligono.push_back(aux);
-aux.x=-1.2; aux.y=0.0; aux.z=1.0;
-poligono.push_back(aux);
+	extrusion= new _extrusion(poligono, 0.25, 1.0, 0.25);
 
-extrusion= new _extrusion(poligono, 0.25, 1.0, 0.25);
+	// se llama a la inicialización de glut
+	glutInit(&argc, argv);
 
-// se llama a la inicialización de glut
-glutInit(&argc, argv);
+	// se indica las caracteristicas que se desean para la visualización con OpenGL
+	// Las posibilidades son:
+	// GLUT_SIMPLE -> memoria de imagen simple
+	// GLUT_DOUBLE -> memoria de imagen doble
+	// GLUT_INDEX -> memoria de imagen con color indizado
+	// GLUT_RGB -> memoria de imagen con componentes rojo, verde y azul para cada pixel
+	// GLUT_RGBA -> memoria de imagen con componentes rojo, verde, azul y alfa para cada pixel
+	// GLUT_DEPTH -> memoria de profundidad o z-bufer
+	// GLUT_STENCIL -> memoria de estarcido_rotation Rotation;
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
-// se indica las caracteristicas que se desean para la visualización con OpenGL
-// Las posibilidades son:
-// GLUT_SIMPLE -> memoria de imagen simple
-// GLUT_DOUBLE -> memoria de imagen doble
-// GLUT_INDEX -> memoria de imagen con color indizado
-// GLUT_RGB -> memoria de imagen con componentes rojo, verde y azul para cada pixel
-// GLUT_RGBA -> memoria de imagen con componentes rojo, verde, azul y alfa para cada pixel
-// GLUT_DEPTH -> memoria de profundidad o z-bufer
-// GLUT_STENCIL -> memoria de estarcido_rotation Rotation;
-glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	// posicion de la esquina inferior izquierdad de la ventana
+	glutInitWindowPosition(Window_x,Window_y);
 
-// posicion de la esquina inferior izquierdad de la ventana
-glutInitWindowPosition(Window_x,Window_y);
+	// tamaño de la ventana (ancho y alto)
+	glutInitWindowSize(Window_width,Window_high);
 
-// tamaño de la ventana (ancho y alto)
-glutInitWindowSize(Window_width,Window_high);
+	// llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
+	// al bucle de eventos)
+	glutCreateWindow("PRACTICA - 2");
 
-// llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
-// al bucle de eventos)
-glutCreateWindow("PRACTICA - 2");
+	// asignación de la funcion llamada "dibujar" al evento de dibujo
+	glutDisplayFunc(draw);
+	// asignación de la funcion llamada "change_window_size" al evento correspondiente
+	glutReshapeFunc(change_window_size);
+	// asignación de la funcion llamada "normal_key" al evento correspondiente
+	glutKeyboardFunc(normal_key);
+	// asignación de la funcion llamada "tecla_Especial" al evento correspondiente
+	glutSpecialFunc(special_key);
 
-// asignación de la funcion llamada "dibujar" al evento de dibujo
-glutDisplayFunc(draw);
-// asignación de la funcion llamada "change_window_size" al evento correspondiente
-glutReshapeFunc(change_window_size);
-// asignación de la funcion llamada "normal_key" al evento correspondiente
-glutKeyboardFunc(normal_key);
-// asignación de la funcion llamada "tecla_Especial" al evento correspondiente
-glutSpecialFunc(special_key);
+	// funcion de inicialización
+	initialize();
 
-// funcion de inicialización
-initialize();
+	// creación del objeto ply
+	ply.parametros(argv[1]);
 
-// creación del objeto ply
-ply.parametros(argv[1]);
+	//ply = new _objeto_ply(argv[1]);
 
-//ply = new _objeto_ply(argv[1]);
-
-// inicio del bucle de eventos
-glutMainLoop();
-return 0;
+	// inicio del bucle de eventos
+	glutMainLoop();
+	return 0;
 }

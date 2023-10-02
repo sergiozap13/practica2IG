@@ -38,9 +38,11 @@ public:
 void 	draw_aristas(float r, float g, float b, int grosor);
 void    draw_solido(float r, float g, float b);
 void 	draw_solido_colores();
+void 	asignar_gama_colores();
 void 	draw(_modo modo, float r, float g, float b, float grosor);
 
 vector<_vertex3i> caras;
+vector<_vertex3f> colores_caras; 
 };
 
 
@@ -54,6 +56,19 @@ public:
 
 	_cubo(float tam=0.5);
 };
+
+//*************************************************************************
+// clase rombo 3D
+//*************************************************************************
+
+
+class _rombo3D: public _triangulos3D
+{
+public:
+
+	_rombo3D(float tam=0.5, float al=1.0);
+};
+
 
 
 //*************************************************************************
