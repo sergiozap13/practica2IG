@@ -101,9 +101,13 @@ void  parametros(char *archivo);
 class _rotacion: public _triangulos3D
 {
 public:
-       _rotacion();
+    _rotacion();
        
-void  parametros(vector<_vertex3f> perfil, int num);
+	void  parametros(vector<_vertex3f> perfil, int num, int tapa_in, int tapa_su, int tipo); // tapa inferior y superior
+	// todo añadir parametro tipo: tipo0 revolucion normal , 1 esfera, 2 cono
+
+	void asignar_gama_colores(int num_caras);
+
 };
 
 
@@ -116,4 +120,24 @@ class _extrusion: public _triangulos3D
 public:
        _extrusion(vector<_vertex3f> poligono, float x, float y, float z);
 };
+
+class _cilindro: public _rotacion
+{
+public:
+       _cilindro(float radio, float altura, int lados);
+};
+
+class _cono: public _rotacion
+{
+public:
+       _cono(float radio, float altura, int lados);
+};
+
+class _esfera: public _rotacion
+{
+public:
+       _esfera(float radio, int lados);
+};
+
+
 

@@ -12,7 +12,7 @@
 using namespace std;
 
 // tipos
-typedef enum{ CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION } _tipo_objeto;
+typedef enum{ CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION, CILINDRO, CONO, ESFERA } _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -34,6 +34,9 @@ _piramide piramide(0.85,1.3);
 _objeto_ply  ply; 
 _rotacion rotacion; 
 _extrusion *extrusion;
+_cilindro cilindro(0.5,1,12);
+_cono cono(0.5,1.3,8);
+_esfera esfera(1.0,100);
 
 // _objeto_ply *ply;
 
@@ -71,12 +74,12 @@ glFrustum(-Size_x,Size_x,-Size_y,Size_y,Front_plane,Back_plane);
 void change_observer()
 {
 
-// posicion del observador
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-glTranslatef(0,0,-Observer_distance);
-glRotatef(Observer_angle_x,1,0,0);
-glRotatef(Observer_angle_y,0,1,0);
+	// posicion del observador
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(0,0,-Observer_distance);
+	glRotatef(Observer_angle_x,1,0,0);
+	glRotatef(Observer_angle_y,0,1,0);
 }
 
 //**************************************************************************
@@ -118,6 +121,9 @@ switch (t_objeto){
         case OBJETO_PLY: ply.draw(modo,1.0,1.0,0.0,5);break;
         case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
+		case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
+		case CONO: cono.draw(modo,0.5,0.5,0.0,5);break;
+		case ESFERA: esfera.draw(modo,0.5,0.5,0.0,5);break;
 	}
 
 }
@@ -180,8 +186,11 @@ switch (toupper(Tecla1)){
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
         case 'X':t_objeto=EXTRUSION;break;
+		case 'L':t_objeto=CILINDRO;break;
+		case 'K':t_objeto=CONO;break;
+		case 'E':t_objeto=ESFERA;break;
 	}
-glutPostRedisplay();
+	glutPostRedisplay();
 }
 
 //***************************************************************************
@@ -248,7 +257,6 @@ glViewport(0,0,Window_width,Window_high);
 
 int main(int argc, char *argv[] )
 {
- 
 	// perfil 
 	
 	vector<_vertex3f> perfil, poligono;
@@ -259,7 +267,7 @@ int main(int argc, char *argv[] )
 	aux.x=1.0; aux.y=1.0; aux.z=0.0;
 	perfil.push_back(aux);
 
-	rotacion.parametros(perfil,6);
+	rotacion.parametros(perfil,6,1,1,0); // añadir parametro tipo
 
 	aux.x=1.0; aux.y=0.0; aux.z=1.0;
 	poligono.push_back(aux);
