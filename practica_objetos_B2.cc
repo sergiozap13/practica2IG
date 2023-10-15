@@ -1,5 +1,6 @@
 //**************************************************************************
 // Práctica 2 
+// Alumno: Sergio Zapata De la Hoz
 //**************************************************************************
 
 #include <GL/glut.h>
@@ -121,9 +122,9 @@ switch (t_objeto){
         case OBJETO_PLY: ply.draw(modo,1.0,1.0,0.0,5);break;
         case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
-		case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
-		case CONO: cono.draw(modo,0.5,0.5,0.0,5);break;
-		case ESFERA: esfera.draw(modo,0.5,0.5,0.0,5);break;
+		case CILINDRO: cilindro.draw(modo,0.0,0.0,0.0,3);break;
+		case CONO: cono.draw(modo,0.0,0.0,0.0,3);break;
+		case ESFERA: esfera.draw(modo,0.0,0.0,0.0,3);break;
 	}
 
 }
@@ -267,7 +268,7 @@ int main(int argc, char *argv[] )
 	aux.x=1.0; aux.y=1.0; aux.z=0.0;
 	perfil.push_back(aux);
 
-	rotacion.parametros(perfil,6,1,1,0); // añadir parametro tipo
+	rotacion.parametros(perfil,6,1,1,0,true); // añadir parametro tipo
 
 	aux.x=1.0; aux.y=0.0; aux.z=1.0;
 	poligono.push_back(aux);

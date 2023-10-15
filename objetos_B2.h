@@ -1,5 +1,6 @@
 //**************************************************************************
 // Práctica 2 
+// Alumno: Sergio Zapata De la Hoz
 //**************************************************************************
 
 #include <vector>
@@ -40,6 +41,7 @@ void    draw_solido(float r, float g, float b);
 void 	draw_solido_colores();
 void 	asignar_gama_colores();
 void 	draw(_modo modo, float r, float g, float b, float grosor);
+
 
 vector<_vertex3i> caras;
 vector<_vertex3f> colores_caras; 
@@ -103,10 +105,11 @@ class _rotacion: public _triangulos3D
 public:
     _rotacion();
        
-	void  parametros(vector<_vertex3f> perfil, int num, int tapa_in, int tapa_su, int tipo); // tapa inferior y superior
+	void  parametros(vector<_vertex3f> perfil, int num, int tapa_in, int tapa_su, int tipo, bool random); // tapa inferior y superior
 	// todo añadir parametro tipo: tipo0 revolucion normal , 1 esfera, 2 cono
 
 	void asignar_gama_colores(int num_caras);
+	void asignar_gama_random_colores(int num_caras);
 
 };
 
