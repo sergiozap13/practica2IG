@@ -105,12 +105,10 @@ class _rotacion: public _triangulos3D
 public:
     _rotacion();
        
-	void  parametros(vector<_vertex3f> perfil, int num, int tapa_in, int tapa_su, int tipo, bool random); // tapa inferior y superior
+	void  parametros(vector<_vertex3f> perfil, int num, int tapa_in, int tapa_su, int tipo); // tapa inferior y superior
 	// todo añadir parametro tipo: tipo0 revolucion normal , 1 esfera, 2 cono
-
-	void asignar_gama_colores(int num_caras);
 	void asignar_gama_random_colores(int num_caras);
-
+	void asignar_gama_colores(int num_caras);
 };
 
 
@@ -141,6 +139,8 @@ class _esfera: public _rotacion
 public:
        _esfera(float radio, int lados);
 };
+
+
 
 
 
